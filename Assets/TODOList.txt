@@ -1,0 +1,71 @@
+
+#Game Article
+
+-MapGenerator
+	Random Terrain
+		토양성질
+	Random Resource
+-Game Speed Controll
+-Game Time
+	밤낮
+	계절
+-날씨
+-온도
+-식물
+	성장
+-건설
+	도로
+-시민 AI
+	우선순위
+-몬스터 & 동물
+
+의약품
+기호식품
+의류
+문화시설
+도구 검 갑옷 활 화살 장작 양모 가죽
+학교
+종교
+연구
+인구증가  : 출산 유입
+범죄
+질병
+식량확보 : 농업 채집 사냥 낚시 과수 거래
+통계
+물류 관리 : 시장 창고 상단
+
+자원 : 시간 토지 인구 식량 도구 방한 약품 행복 군사력 특수건물
+
+
+
+
+
+
+#Tech Article
+
+-Camera Controll
+	Mobile Controll
+		UI 영역 Controll 방지
+		Touch And Drag : Camera Move
+		Touch : 2D event & Tilmap Select
+
+	PC Controll
+
+-Resource
+
+-TileMap Stress Test
+
+-UI
+	UI 레이아웃 구성
+
+-MultiThread & Job System
+
+-Profiling UI
+
+
+
+
+
+
+
+
