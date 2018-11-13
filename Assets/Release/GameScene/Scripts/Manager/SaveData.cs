@@ -13,7 +13,7 @@ public class SaveData {
     public class Map
     {
         public Vector2Int size;
-
+        public int[,] map_layer0;
 
 
     }

@@ -38,6 +38,15 @@ public class GM : MonoBehaviour {
         WorldConfig = FindObjectOfType<WorldConfigMessenger>();
         Generator = this.GetComponent<WorldGenerator>();
 
+        //WorldConfigMessenger
+        InitWorldConfigMessenger();
+
+
+    }
+
+    void InitWorldConfigMessenger()
+    {
+        SaveData.map.size = WorldConfig.map.size;
     }
 
     private IEnumerator Start()

@@ -9,15 +9,23 @@ public class WorldGenerator : MonoBehaviour {
 
     public IEnumerator Generator()
     {
-        for (int x = 0; x < halfsize.x; x++)
-        {
-            for (int y = -halfsize.y; y < halfsize.y; y++)
-            {
-                tilemap_Background.SetTile(new Vector3Int(x, y, 0), tiles[mapData.background[x + halfsize.x, y + halfsize.y]]);
-            }
-        }
+        GenerateData();
+        GenerateMap();
+        yield break;
+    }
 
-        yield return null;
+    void GenerateData()
+    {
+        SaveData.Map map = GM.Instance.SaveData.map;
+
+        map.map_layer0 = new int[map.size.x, map.size.y];
+
+
+    }
+    
+    void GenerateMap()
+    {
+
     }
 
 }
