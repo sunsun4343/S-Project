@@ -20,6 +20,22 @@ public class WorldGenerator : MonoBehaviour {
 
         map.map_layer0 = new int[map.size.x, map.size.y];
 
+        for (int x = 0; x < map.size.x; x++)
+        {
+            for (int y = 0; y < map.size.y; y++)
+            {
+                switch ((GameDB.TileLayer0)map.map_layer0[x,y])
+                {
+                    case GameDB.TileLayer0.Ground:
+
+                        break;
+                }
+
+                tilemap_background.SetTile(new Vector3Int(x, y, 0), );
+                
+            }
+        }
+
 
     }
     
