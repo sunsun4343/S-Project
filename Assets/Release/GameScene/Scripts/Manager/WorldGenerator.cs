@@ -11,6 +11,7 @@ public class WorldGenerator : MonoBehaviour {
     {
         GenerateData();
         GenerateMap();
+        SettingCamera();
         yield break;
     }
 
@@ -24,23 +25,32 @@ public class WorldGenerator : MonoBehaviour {
         {
             for (int y = 0; y < map.size.y; y++)
             {
-                switch ((GameDB.TileLayer0)map.map_layer0[x,y])
-                {
-                    case GameDB.TileLayer0.Ground:
-
-                        break;
-                }
-
-                tilemap_background.SetTile(new Vector3Int(x, y, 0), );
-                
+                map.map_layer0[x, y] = (int)GameDB.TileLayer0.Ground;
             }
         }
-
-
     }
     
     void GenerateMap()
     {
+        SaveData.Map map = GM.Instance.SaveData.map;
+        GameDB db = GM.Instance.DB;
+
+        for (int x = 0; x < map.size.x; x++)
+        {
+            for (int y = 0; y < map.size.y; y++)
+            {
+                int index = map.map_layer0[x, y];
+                tilemap_background.SetTile(new Vector3Int(x, y, 0), db.tileBases[index]);
+            }
+        }
+    }
+
+    void SettingCamera()
+    {
+        SaveData.Map map = GM.Instance.SaveData.map;
+        GM.Instance.CamController.transform.position = new Vector3(map.size.x * 0.5f, map.size.y * 0.5f, -10);
+
+
 
     }
 

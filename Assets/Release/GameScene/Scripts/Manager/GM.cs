@@ -26,21 +26,32 @@ public class GM : MonoBehaviour {
     //MonoBehaviour
     public WorldConfigMessenger WorldConfig { get; private set; }
     public WorldGenerator Generator { get; private set; }
-
+    public CameraController CamController { get; private set; }
 
     private void Awake()
     {
+
         //Class
         DB = new GameDB();
         SaveData = new SaveData();
 
         //MonoBehaviour
         WorldConfig = FindObjectOfType<WorldConfigMessenger>();
+
+#if UNITY_EDITOR
+        if (WorldConfig == null)
+        {
+            EditorGameSceneTest sceneTest = FindObjectOfType<EditorGameSceneTest>();
+            sceneTest.Init();
+            WorldConfig = FindObjectOfType<WorldConfigMessenger>();
+        }
+#endif
+
         Generator = this.GetComponent<WorldGenerator>();
+        CamController = this.GetComponent<CameraController>();
 
         //WorldConfigMessenger
         InitWorldConfigMessenger();
-
 
     }
 
@@ -51,7 +62,9 @@ public class GM : MonoBehaviour {
 
     private IEnumerator Start()
     {
+        yield return StartCoroutine(DB.Init_TileBase());
         yield return StartCoroutine(Generator.Generator());
+
     }
 
 

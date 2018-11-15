@@ -8,7 +8,7 @@ public class EditorGameSceneTest : MonoBehaviour {
 
     public Vector2Int mapSize;
 
-    private void Awake()
+    public void Init()
     {
         WorldConfigMessenger worldConfig = FindObjectOfType<WorldConfigMessenger>();
 
@@ -22,7 +22,6 @@ public class EditorGameSceneTest : MonoBehaviour {
             worldConfig.map.size = mapSize;
 
         }
-
     }
 
 #endif
