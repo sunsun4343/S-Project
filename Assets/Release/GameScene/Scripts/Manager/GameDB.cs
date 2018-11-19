@@ -5,35 +5,33 @@ using UnityEngine.Tilemaps;
 
 public class GameDB {
 
-    public enum TileLayer0
+    public enum TileKey
     {
         Empty,
         Ground,
 
+        StoneBlock = 1000,
 
+        Tree = 1010,
 
         MAX
     }
 
-    public List<TileBase> tileBases = new List<TileBase>();
+    public Dictionary<ushort, TileBase> tilebaseDic = new Dictionary<ushort, TileBase>();
 
     public IEnumerator Init_TileBase()
     {
-        int count = (int)TileLayer0.MAX;
-        for (int i = 0; i < count; i++)
+        TileBase[] tileBases = Resources.LoadAll<TileBase>("TileBase");
+        for (int i = 0; i < tileBases.Length; i++)
         {
-            var req = Resources.LoadAsync<TileBase>(string.Format("TileBase/{0}", i));
-
-            while (!req.isDone)
+            ushort key;
+            bool isSucess = ushort.TryParse(tileBases[i].name, out key);
+            if (isSucess)
             {
-                yield return null;
+                tilebaseDic.Add(key, tileBases[i]);
             }
-
-            tileBases.Add(req.asset as TileBase);
         }
         yield break;
-
-
     }
 
 }

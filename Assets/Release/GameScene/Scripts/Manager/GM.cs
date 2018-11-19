@@ -38,16 +38,6 @@ public class GM : MonoBehaviour {
 
         //MonoBehaviour
         WorldConfig = FindObjectOfType<WorldConfigMessenger>();
-
-#if UNITY_EDITOR
-        if (WorldConfig == null)
-        {
-            EditorGameSceneTest sceneTest = FindObjectOfType<EditorGameSceneTest>();
-            sceneTest.Init();
-            WorldConfig = FindObjectOfType<WorldConfigMessenger>();
-        }
-#endif
-
         Generator = this.GetComponent<WorldGenerator>();
         CamController = FindObjectOfType<CameraController>();
 
