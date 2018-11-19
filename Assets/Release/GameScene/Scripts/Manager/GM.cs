@@ -22,6 +22,7 @@ public class GM : MonoBehaviour {
     //Class
     public GameDB DB { get; private set; }
     public SaveData SaveData { get; private set; }
+    public RuntimeData RuntimeData { get; private set; }
 
     //MonoBehaviour
     public WorldConfigMessenger WorldConfig { get; private set; }
@@ -30,10 +31,10 @@ public class GM : MonoBehaviour {
 
     private void Awake()
     {
-
         //Class
         DB = new GameDB();
         SaveData = new SaveData();
+        RuntimeData = new RuntimeData();
 
         //MonoBehaviour
         WorldConfig = FindObjectOfType<WorldConfigMessenger>();
@@ -48,7 +49,7 @@ public class GM : MonoBehaviour {
 #endif
 
         Generator = this.GetComponent<WorldGenerator>();
-        CamController = this.GetComponent<CameraController>();
+        CamController = FindObjectOfType<CameraController>();
 
         //WorldConfigMessenger
         InitWorldConfigMessenger();
