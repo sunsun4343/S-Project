@@ -769,6 +769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc86b4f6794713749a0b4e88ed3eb2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seed: test
   map:
     size: {x: 50, y: 50}
 --- !u!1 &1360003137

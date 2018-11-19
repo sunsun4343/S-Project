@@ -18,19 +18,20 @@ public class WorldGenerator : MonoBehaviour {
 
     void GenerateData()
     {
-        SaveData.Map map = GM.Instance.SaveData.map;
+        SaveData saveData = GM.Instance.SaveData;
+        SaveData.Map map = saveData.map;
 
         map.map_layer0 = new ushort[map.size.x, map.size.y];
         map.map_layer1 = new ushort[map.size.x, map.size.y];
 
         //산악 지형
-        CellularAutomata cellular_stone = new CellularAutomata(map.size.x, map.size.y, 50);
+        CellularAutomata cellular_stone = new CellularAutomata(map.size.x, map.size.y, 50, 5, saveData.seed);
         int[,] mountinMap = cellular_stone.GenerateMap();
 
         //나무
-        CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 30);
-        int[,] treeMap = cellular_tree.GenerateMap();
-        //TODO 시드와 마스킹 문제.
+        CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 30, 5, saveData.seed);
+        int[,] treeMap = cellular_tree.GenerateMap(mountinMap, true);
+
 
         for (int x = 0; x < map.size.x; x++)
         {

@@ -5,11 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class SaveData {
 
+    public string seed;
+
     public Map map { get; private set; }
     public SaveData()
     {
         map = new Map();
     }
+
+
 
     [System.Serializable]
     public class Map
@@ -17,6 +21,7 @@ public class SaveData {
         public Vector2Int size;
         public ushort[,] map_layer0;
         public ushort[,] map_layer1;
+        
 
 
 

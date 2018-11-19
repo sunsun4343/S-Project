@@ -48,13 +48,16 @@ public class GM : MonoBehaviour {
 
     void InitWorldConfigMessenger()
     {
+        SaveData.seed = WorldConfig.seed;
         SaveData.map.size = WorldConfig.map.size;
+
     }
 
     private IEnumerator Start()
     {
         yield return StartCoroutine(DB.Init_TileBase());
         yield return StartCoroutine(Generator.Generator());
+
 
     }
 

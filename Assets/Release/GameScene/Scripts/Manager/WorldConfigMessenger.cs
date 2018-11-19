@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorldConfigMessenger : MonoBehaviour {
 
+    public string seed;
     public SaveData.Map map;
 
 }

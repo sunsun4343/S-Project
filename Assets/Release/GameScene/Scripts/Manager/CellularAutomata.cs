@@ -34,6 +34,18 @@ public class CellularAutomata {
         return map;
     }
 
+    public int[,] GenerateMap(int[,] mask, bool reverse)
+    {
+        map = new int[width, height];
+        RandomFillMap(mask, reverse);
+
+        for (int i = 0; i < smoothCount; i++)
+        {
+            SmoothMap();
+        }
+
+        return map;
+    }
 
     void RandomFillMap()
     {
@@ -58,6 +70,38 @@ public class CellularAutomata {
                 }
             }
         }
+    }
+
+    void RandomFillMap(int[,] mask, bool reverse)
+    {
+        int maskindex = reverse ? 0 : 1; 
+
+        if (string.IsNullOrEmpty(seed))
+        {
+            seed = Time.time.ToString();
+        }
+
+        System.Random pseudoRandom = new System.Random(seed.GetHashCode());
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
+                {
+                    map[x, y] = 1;
+                }
+                else
+                {
+                    if (mask[x, y] == maskindex)
+                    {
+                        map[x, y] = (pseudoRandom.Next(0, 100) < randomFillPercent) ? 1 : 0;
+                    }
+                }
+            }
+        }
+
+
     }
 
     void SmoothMap()
