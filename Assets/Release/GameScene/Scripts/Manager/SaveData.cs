@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class SaveData {
 
     public Map map { get; private set; }
@@ -10,6 +11,7 @@ public class SaveData {
         map = new Map();
     }
 
+    [System.Serializable]
     public class Map
     {
         public Vector2Int size;
