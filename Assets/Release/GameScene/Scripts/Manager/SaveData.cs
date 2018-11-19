@@ -13,7 +13,9 @@ public class SaveData {
     public class Map
     {
         public Vector2Int size;
-        public int[,] map_layer0;
+        public ushort[,] map_layer0;
+        public ushort[,] map_layer1;
+
 
 
     }

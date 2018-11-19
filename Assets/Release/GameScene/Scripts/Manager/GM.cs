@@ -48,7 +48,7 @@ public class GM : MonoBehaviour {
 #endif
 
         Generator = this.GetComponent<WorldGenerator>();
-        CamController = this.GetComponent<CameraController>();
+        CamController = FindObjectOfType<CameraController>();
 
         //WorldConfigMessenger
         InitWorldConfigMessenger();

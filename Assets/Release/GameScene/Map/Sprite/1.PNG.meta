@@ -102,7 +102,7 @@ TextureImporter:
     indices: 
     edges: []
     weights: []
-  spritePackingTag: Tile_Background
+  spritePackingTag: Layer0
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
