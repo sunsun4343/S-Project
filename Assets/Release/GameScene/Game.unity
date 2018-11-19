@@ -770,7 +770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map:
-    size: {x: 255, y: 255}
+    size: {x: 50, y: 50}
 --- !u!1 &1360003137
 GameObject:
   m_ObjectHideFlags: 0

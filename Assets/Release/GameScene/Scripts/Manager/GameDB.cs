@@ -12,6 +12,8 @@ public class GameDB {
 
         StoneBlock = 1000,
 
+        Tree = 1010,
+
         MAX
     }
 

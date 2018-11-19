@@ -24,8 +24,13 @@ public class WorldGenerator : MonoBehaviour {
         map.map_layer1 = new ushort[map.size.x, map.size.y];
 
         //산악 지형
-        CellularAutomata cellular = new CellularAutomata(map.size.x, map.size.y, 50);
-        int[,] mountinMap = cellular.GenerateMap();
+        CellularAutomata cellular_stone = new CellularAutomata(map.size.x, map.size.y, 50);
+        int[,] mountinMap = cellular_stone.GenerateMap();
+
+        //나무
+        CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 30);
+        int[,] treeMap = cellular_tree.GenerateMap();
+        //TODO 시드와 마스킹 문제.
 
         for (int x = 0; x < map.size.x; x++)
         {
@@ -35,7 +40,14 @@ public class WorldGenerator : MonoBehaviour {
 
                 if (mountinMap[x,y] == 0)
                 {
-                    map.map_layer1[x, y] = (ushort)GameDB.TileKey.Empty;
+                    if (treeMap[x, y] == 0)
+                    {
+                        map.map_layer1[x, y] = (ushort)GameDB.TileKey.Empty;
+                    }
+                    else
+                    {
+                        map.map_layer1[x, y] = (ushort)GameDB.TileKey.Tree;
+                    }
                 }
                 else
                 {
