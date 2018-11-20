@@ -56,6 +56,37 @@ public class TouchWrapper
         }
     }
 
+    public static List<WrappedTouch> Touches
+    {
+        get
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_WEBGL
+            #region unity remote codepath
+            if (Input.touchCount > 0)
+            {
+                return (GetTouchesFromInputTouches());
+            }
+            #endregion
+
+            return new List<WrappedTouch>() { Touch0 };
+#else
+        return (GetTouchesFromInputTouches());
+#endif
+        }
+    }
+
+    private static List<WrappedTouch> GetTouchesFromInputTouches()
+    {
+        List<WrappedTouch> touches = new List<WrappedTouch>();
+
+        foreach (var touch in Input.touches)
+        {
+            touches.Add(WrappedTouch.FromTouch(touch));
+        }
+
+        return (touches);
+    }
+
     public static bool IsFingerDown
     {
         get

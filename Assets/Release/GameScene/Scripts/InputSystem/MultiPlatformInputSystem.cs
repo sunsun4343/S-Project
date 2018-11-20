@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MultiPlatformInputSystem : MonoBehaviour {
 
@@ -31,10 +32,12 @@ public class MultiPlatformInputSystem : MonoBehaviour {
     [Tooltip("활성화되면 드래그 시작 이벤트는 긴 탭 시간이 완료되면 즉시 호출됩니다.")]
     private bool longTapStartsDrag = true;
 
+
     /// <summary>
     /// 드래그를 시작하기 위해 터치 시작 후 경과해야 되는 최소 시간
     /// </summary>
     private const float dragDurationThreshold = 0.01f;
+
 
     //콜백 이벤트
 
@@ -69,10 +72,9 @@ public class MultiPlatformInputSystem : MonoBehaviour {
     public delegate void InputClickDelegate(Vector3 clickPosition, bool isDoubleClick, bool isLongTap);
     public event InputClickDelegate OnInputClick;
 
-
     //공통
-
     private bool isInputOnLockedArea = false;
+    
     /// <summary>
     /// 화면 터치 잠금 관리
     /// </summary>
@@ -81,6 +83,7 @@ public class MultiPlatformInputSystem : MonoBehaviour {
         get { return isInputOnLockedArea; }
         set { isInputOnLockedArea = value; }
     }
+
     /// <summary>
     /// 터치 시작 리얼타임
     /// </summary>
@@ -97,7 +100,13 @@ public class MultiPlatformInputSystem : MonoBehaviour {
 
     //피칭관련
     private bool isPinching;
-
+    private float pinchStartDistance;
+    private List<Vector3> pinchStartPositions;
+    private List<Vector3> touchPositionLastFrame;
+    private bool wasPinchingLastFrame;
+    private Vector3 pinchRotationVectorStart = Vector3.zero;
+    private Vector3 pinchVectorLastFrame = Vector3.zero;
+    private float totalFingerMovement;
 
     //클릭관련
 
@@ -124,6 +133,7 @@ public class MultiPlatformInputSystem : MonoBehaviour {
     /// 드래그가 시작된 후 경과한 시간
     /// </summary>
     private float timeSinceDragStart = 0;
+    private const int momentumSamplesCount = 5;
     private List<Vector3> DragFinalMomentumVector { get; set; }
 
 
@@ -163,7 +173,7 @@ public class MultiPlatformInputSystem : MonoBehaviour {
         //화면 잠금이 아닌경우 동작
         if (isInputOnLockedArea == false)
         {
-            TouchActionUpdate();
+            TouchActionUpdate(ref pinchToDragCurrentFrame);
         }
 
         if (isDragging && TouchWrapper.IsFingerDown && pinchToDragCurrentFrame == false)
@@ -202,7 +212,7 @@ public class MultiPlatformInputSystem : MonoBehaviour {
 
     }
 
-    void TouchActionUpdate()
+    void TouchActionUpdate(ref bool pinchToDragCurrentFrame)
     {
         #region pinch
         if (isPinching == false)
@@ -341,6 +351,7 @@ public class MultiPlatformInputSystem : MonoBehaviour {
         pinchRotationVectorStart = TouchWrapper.Touches[1].Position - TouchWrapper.Touches[0].Position;
         pinchVectorLastFrame = pinchRotationVectorStart;
         totalFingerMovement = 0;
+
     }
 
     private void UpdatePinch()
@@ -363,22 +374,22 @@ public class MultiPlatformInputSystem : MonoBehaviour {
 
         #region tilting gesture
         float pinchTiltDelta = 0;
-        Vector3 touch0DeltaRelative = GetTouchPositionRelative(TouchWrapper.Touches[0].Position - touchPositionLastFrame[0]);
-        Vector3 touch1DeltaRelative = GetTouchPositionRelative(TouchWrapper.Touches[1].Position - touchPositionLastFrame[1]);
-        float touch0DotUp = Vector2.Dot(touch0DeltaRelative.normalized, Vector2.up);
-        float touch1DotUp = Vector2.Dot(touch1DeltaRelative.normalized, Vector2.up);
-        float pinchVectorDotHorizontal = Vector3.Dot(pinchVector.normalized, Vector3.right);
-        if (Mathf.Sign(touch0DotUp) == Mathf.Sign(touch1DotUp))
-        {
-            if (Mathf.Abs(touch0DotUp) > tiltMoveDotTreshold && Mathf.Abs(touch1DotUp) > tiltMoveDotTreshold)
-            {
-                if (Mathf.Abs(pinchVectorDotHorizontal) >= tiltHorizontalDotThreshold)
-                {
-                    pinchTiltDelta = 0.5f * (touch0DeltaRelative.y + touch1DeltaRelative.y);
-                }
-            }
-        }
-        totalFingerMovement += touch0DeltaRelative.magnitude + touch1DeltaRelative.magnitude;
+        //Vector3 touch0DeltaRelative = GetTouchPositionRelative(TouchWrapper.Touches[0].Position - touchPositionLastFrame[0]);
+        //Vector3 touch1DeltaRelative = GetTouchPositionRelative(TouchWrapper.Touches[1].Position - touchPositionLastFrame[1]);
+        //float touch0DotUp = Vector2.Dot(touch0DeltaRelative.normalized, Vector2.up);
+        //float touch1DotUp = Vector2.Dot(touch1DeltaRelative.normalized, Vector2.up);
+        //float pinchVectorDotHorizontal = Vector3.Dot(pinchVector.normalized, Vector3.right);
+        //if (Mathf.Sign(touch0DotUp) == Mathf.Sign(touch1DotUp))
+        //{
+        //    if (Mathf.Abs(touch0DotUp) > tiltMoveDotTreshold && Mathf.Abs(touch1DotUp) > tiltMoveDotTreshold)
+        //    {
+        //        if (Mathf.Abs(pinchVectorDotHorizontal) >= tiltHorizontalDotThreshold)
+        //        {
+        //            pinchTiltDelta = 0.5f * (touch0DeltaRelative.y + touch1DeltaRelative.y);
+        //        }
+        //    }
+        //}
+        //totalFingerMovement += touch0DeltaRelative.magnitude + touch1DeltaRelative.magnitude;
         #endregion
 
         if (OnPinchUpdate != null)
@@ -389,11 +400,13 @@ public class MultiPlatformInputSystem : MonoBehaviour {
         {
             OnPinchUpdateExtended(new PinchUpdateData() { pinchCenter = pinchCenter, pinchDistance = pinchDistance, pinchStartDistance = pinchStartDistance, pinchAngleDelta = pinchAngleDelta, pinchAngleDeltaNormalized = pinchAngleDeltaNormalized, pinchTiltDelta = pinchTiltDelta, pinchTotalFingerMovement = totalFingerMovement });
         }
+
         pinchVectorLastFrame = pinchVector;
         touchPositionLastFrame[0] = TouchWrapper.Touches[0].Position;
         touchPositionLastFrame[1] = TouchWrapper.Touches[1].Position;
 
     }
+
 
     private float GetPinchDistance(Vector3 pos0, Vector3 pos1)
     {

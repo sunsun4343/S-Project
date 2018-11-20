@@ -85,7 +85,7 @@ public class WorldGenerator : MonoBehaviour {
     void SettingCamera()
     {
         SaveData.Map map = GM.Instance.SaveData.map;
-        GM.Instance.CamController.transform.position = new Vector3(map.size.x * 0.5f, map.size.y * 0.5f, -10);
+        //GM.Instance.RTS.transform.position = new Vector3(map.size.x * 0.5f, map.size.y * 0.5f, -10);
 
 
 
