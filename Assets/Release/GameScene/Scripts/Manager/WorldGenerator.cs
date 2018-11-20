@@ -31,6 +31,8 @@ public class WorldGenerator : MonoBehaviour {
         //나무
         CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 50, 5, saveData.seed);
         int[,] treeMap = cellular_tree.GenerateMap(mountinMap, true);
+        //나무 간격 조정 셀룰러 오토마타 설정
+        //나무 등 타일에 대한 레이어 및 렌더 우선순위 등 정보를 가진 class 구성
 
 
         for (int x = 0; x < map.size.x; x++)
