@@ -29,7 +29,7 @@ public class WorldGenerator : MonoBehaviour {
         int[,] mountinMap = cellular_stone.GenerateMap();
 
         //나무
-        CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 30, 5, saveData.seed);
+        CellularAutomata cellular_tree = new CellularAutomata(map.size.x, map.size.y, 50, 5, saveData.seed);
         int[,] treeMap = cellular_tree.GenerateMap(mountinMap, true);
 
 
