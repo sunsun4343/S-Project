@@ -27,7 +27,7 @@ public class GM : MonoBehaviour {
     //MonoBehaviour
     public WorldConfigMessenger WorldConfig { get; private set; }
     public WorldGenerator Generator { get; private set; }
-    public CameraController CamController { get; private set; }
+    public MultiPlatformInputSystem InputSystem { get; private set; }
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class GM : MonoBehaviour {
         //MonoBehaviour
         WorldConfig = FindObjectOfType<WorldConfigMessenger>();
         Generator = this.GetComponent<WorldGenerator>();
-        CamController = FindObjectOfType<CameraController>();
+        InputSystem = FindObjectOfType<MultiPlatformInputSystem>();
 
         //WorldConfigMessenger
         InitWorldConfigMessenger();
